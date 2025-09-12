@@ -11,9 +11,7 @@ const pasteSlice = createSlice({
     addToPaste: (state, action) => {
       state.pastes.push(action.payload);
     },
-    UpdateToPaste: (state, action) => {},
-    resetAllPaste: (state, action) => {},
-    removeFromPaste: (state, action) => {},
+
   },
 });
 export const { addToPaste, UpdateToPaste, resetAllPaste, removeFromPaste } =
