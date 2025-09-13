@@ -32,7 +32,7 @@ const pasteSlice = createSlice({
     },
     removeFromPaste: (state, action) => {
       const pasteId = action.payload;
-      const index = state.pastes.findIndex((item) => item.id === pasteId);
+      const index = state.pastes.findIndex((item) => item._id === pasteId);
       if (index >= 0) {
         state.pastes.splice(index, 1);
         localStorage.setItem("pastes", JSON.stringify(state.pastes));

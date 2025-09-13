@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { addToPaste, UpdateToPaste } from "../redux/pasteSlice";
 
@@ -7,52 +7,73 @@ const Home = () => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [seachParams, setSeachParams] = useSearchParams();
+
   const pasteId = seachParams.get("pasteId");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const allPastes = useSelector((store) => store.paste.pastes);
 
-  function createPaste(){
+  useEffect(() => {
+    if (pasteId) {
+      const paste = allPastes.find((p) => p._id === pasteId);
+      if (paste) {
+        setTitle(paste.title);
+        setValue(paste.content);
+      }
+    }
+  }, [pasteId]);
+
+  function createPaste() {
     const paste = {
-      title : title,
+      title: title,
       content: value,
-      _id: pasteId || 
-           Date.now().toString(36),
-      cretaedAt: new Date().toISOString(),
-    }
-    if(pasteId){
-      // update
-      dispatch(UpdateToPaste(paste))
-    } else{
-      //create
-      dispatch(addToPaste(paste))
-    }
-    // after creation or updation
-    setTitle('');
-    setValue('');
-    setSeachParams('');
+      _id: pasteId || Date.now().toString(36),
+      createdAt: new Date().toISOString(),
+    };
 
+    if (pasteId) {
+      dispatch(UpdateToPaste(paste));
+    } else {
+      dispatch(addToPaste(paste));
+    }
+
+    // reset
+    setTitle("");
+    setValue("");
+    setSeachParams("");
   }
 
   return (
-    <div>
-      <div className="flex flex-row gap-7 bg-black text-white place-content-between">
+    <div className="max-w-4xl mx-auto mt-10 p-6 bg-gray-900 rounded-2xl shadow-lg">
+      {/* Title + Button */}
+      <div className="flex flex-row gap-4 items-center">
         <input
-          className="p-1 rounded-2xl mt-2 w-[66%] pl-3"
+          className="flex-1 p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 
+                     focus:ring-2 focus:ring-yellow-400 outline-none"
           type="text"
-          placeholder="enter title here"
+          placeholder="Enter title here..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <button onClick={createPaste} className="p-2 rounded-2xl mt-2 bg-red-600 cursor:pointer">
-          {pasteId ? "Update My Paste" : "Create My Paste"}
+        <button
+          onClick={createPaste}
+          className="px-5 py-3 rounded-lg bg-yellow-400 text-gray-900 font-semibold 
+                     hover:bg-yellow-300 transition"
+        >
+          {pasteId ? "Update Paste" : "Create Paste"}
         </button>
       </div>
-      <div className="mt-8 bg-black text-white">
+
+      {/* Textarea */}
+      <div className="mt-6">
         <textarea
-        className="rounded-2xl mt-4 min-w-[500px] p-4 "
-        value={value}
-        placeholder="enter content here"
-        onChange={(e)=> setValue(e.target.value)} rows={20}/>
+          className="w-full h-[400px] p-4 rounded-lg bg-gray-800 text-white 
+                     placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none 
+                     resize-none font-mono"
+          value={value}
+          placeholder="Enter content here..."
+          onChange={(e) => setValue(e.target.value)}
+        />
       </div>
     </div>
   );
