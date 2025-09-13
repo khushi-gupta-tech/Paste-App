@@ -28,7 +28,7 @@ const ViewPaste = () => {
 
       {/* Footer */}
       <div className="flex justify-between items-center mt-4 text-gray-400 text-sm">
-        <span>📅 {new Date(paste.cretaedAt).toLocaleString()}</span>
+        <span>📅 {new Date(paste.createdAt).toLocaleString()}</span>
         <button
           onClick={() => {
             navigator.clipboard.writeText(paste.content);
