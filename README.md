@@ -19,7 +19,7 @@ You can **create, edit, delete, search, share, and copy** your text snippets eas
 
 ## 🌐 Live Demo
 
-👉 [**Try Paste App here**](https://paste-app-uh6x.vercel.app/)  
+👉 [**Try Paste App here**](https://paste-app-we5l.vercel.app/)  
 
 ---
 
